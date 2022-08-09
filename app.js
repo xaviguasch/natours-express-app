@@ -74,6 +74,21 @@ app.post('/api/v1/tours', (req, res) => {
   );
 });
 
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id * 1 > tours.length) {
+    // we put "return" because we want to exit the function
+    return res.status(404).json({ status: 'fail', message: 'Invalid ID' });
+  }
+
+  // We aren't really updating the tour item as this is just a demo app to familiarize us with Express
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: '<Updated tour here...>',
+    },
+  });
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
