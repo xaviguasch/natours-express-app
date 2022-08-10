@@ -7,7 +7,9 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 // 1)-MIDDLEWARES
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 //In this case, this is giving us access to the data from the POST request in the body, it PARSES THE DATA (the data is stored in an object,in req.body)
 app.use(express.json());
