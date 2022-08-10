@@ -4,6 +4,17 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+exports.checkID = (req, res, next, val) => {
+  console.log(`tour id is: ${val}`);
+
+  if (req.params.id * 1 > tours.length) {
+    // we put "return" because we want to exit the function
+    return res.status(404).json({ status: 'fail', message: 'Invalid ID' });
+  }
+
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -20,12 +31,6 @@ exports.getTour = (req, res) => {
   const id = req.params.id * 1; // Converts the id string to a number
 
   const tour = tours.find((tour) => tour.id === id);
-
-  // if (id > tours.length) {
-  if (!tour) {
-    // we put "return" because we want to exit the function
-    return res.status(404).json({ status: 'fail', message: 'Invalid ID' });
-  }
 
   res.status(200).json({
     status: 'success',
@@ -63,11 +68,6 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    // we put "return" because we want to exit the function
-    return res.status(404).json({ status: 'fail', message: 'Invalid ID' });
-  }
-
   // We aren't really updating the tour item as this is just a demo app to familiarize us with Express
   res.status(200).json({
     status: 'success',
@@ -78,11 +78,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    // we put "return" because we want to exit the function
-    return res.status(404).json({ status: 'fail', message: 'Invalid ID' });
-  }
-
   // We aren't really deleting the tour item as this is just a demo app to familiarize us with Express
   res.status(204).json({
     status: 'success',
