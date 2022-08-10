@@ -12,6 +12,9 @@ app.use(morgan('dev'));
 //In this case, this is giving us access to the data from the POST request in the body, it PARSES THE DATA (the data is stored in an object,in req.body)
 app.use(express.json());
 
+// This enables us to serve static files
+app.use(express.static(`${__dirname}/public`));
+
 app.use((req, res, next) => {
   console.log('hello from the middleware!');
 
