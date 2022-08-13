@@ -17,12 +17,14 @@ app.use(express.json());
 // This enables us to serve static files
 app.use(express.static(`${__dirname}/public`));
 
+// This is just a demo middleware
 app.use((req, res, next) => {
   console.log('hello from the middleware!');
 
   next();
 });
 
+// It adds the requestTime property to the req object
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
 
