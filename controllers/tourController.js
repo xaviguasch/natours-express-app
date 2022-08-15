@@ -2,28 +2,31 @@ const Tour = require('./../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
+    console.log(req.query);
+
     // BUILD QUERY
+    // 1) Filtering
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
+    // 2) Advanced filtering
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
     // This returns an object query, NOT an unresolved promise
-    const query = Tour.find(queryObj);
+    const query = Tour.find(JSON.parse(queryStr));
+
+    // EXECUTE QUERY
+    // This returns an array with the objects representing the docuements found in the database
+    const tours = await query;
 
     // const tours = await Tour.find()
     //   .where('duration')
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy');
-
-    // const query = await Tour.find({
-    //   duration: 5,
-    //   difficulty: 'easy',
-    // });
-
-    // EXECUTE QUERY
-    // This returns an array with the objects representing the docuements found in the database
-    const tours = await query;
 
     // SEND RESPONSE
     res.status(200).json({
