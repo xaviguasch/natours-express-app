@@ -22,7 +22,7 @@ app.use(express.static(`${__dirname}/public`));
 // It adds the requestTime property to the req object
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-
+  console.log(req.headers);
   next();
 });
 
